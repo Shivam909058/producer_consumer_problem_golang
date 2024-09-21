@@ -1,0 +1,28 @@
+/*
+Package main demonstrates the use of `sync.Mutex` to handle concurrent access to a shared resource, in this case, a pizza order system. The program simulates a pizzeria where multiple pizza orders are processed concurrently, and the results are communicated using channels.
+
+Key Concepts:
+1. **Mutex**: Used to ensure that only one goroutine can access the shared resource (pizza order) at a time, preventing race conditions.
+2. **WaitGroup**: Used to wait for all goroutines to finish their execution before printing the final results.
+3. **Channels**: Used to communicate between the producer (pizzeria) and the consumer (main function).
+
+Types:
+- `Producer`: A struct that holds two channels: one for pizza orders (`data`) and another for signaling the end of processing (`quit`).
+- `PizzaOrder`: A struct that describes a given pizza order, including the order number, a message indicating the order status, and a boolean indicating if the order was successfully completed.
+
+Functions:
+- `main()`: The entry point of the program. It initializes the pizzeria, starts the producer goroutine, and processes the pizza orders.
+- `makePizza(pizzaNumber int) *PizzaOrder`: Simulates the process of making a pizza, including random delays and potential failures.
+- `pizzeria(pizzaMaker *Producer)`: A goroutine that runs in the background, calling `makePizza` to process pizza orders until it receives a quit signal.
+- `Close() error`: A method of the `Producer` struct that closes the channels when processing is complete.
+
+Variables:
+- `NumberOfPizzas`: A constant representing the total number of pizzas to be made.
+- `pizzasMade`, `pizzasFailed`, `total`: Integers to keep track of the number of pizzas made, failed, and the total attempts.
+
+Usage:
+- The program initializes the pizzeria and starts the producer goroutine.
+- The producer goroutine processes pizza orders and sends the results to the `data` channel.
+- The main function consumes the results from the `data` channel and prints the status of each pizza order.
+- The program waits for all orders to be processed before printing the final summary.
+
